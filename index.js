@@ -143,9 +143,11 @@ bot.onText(/\/proximos/, async (msg) => {
     bot.sendMessage(chatId, "❌ Error al obtener los usuarios próximos a vencer.");
     console.error("Error:", err);
   }
-const express = require('express');
+const fetch = require('node-fetch');
 const TelegramBot = require('node-telegram-bot-api');
+const express = require('express');
 
+// Configuración del servidor Express
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -158,7 +160,7 @@ app.listen(PORT, () => {
 });
 
 // Configuración del bot de Telegram
-const TOKEN = 'TU_TOKEN_DEL_BOT';
+const TOKEN = '7599915084:AAHA-m-jQiJLygYA6EPtu8Sxb8qvnHyVWzc';
 const bot = new TelegramBot(TOKEN, { polling: true });
 
 bot.on('message', (msg) => {
@@ -167,6 +169,7 @@ bot.on('message', (msg) => {
 });
 
 console.log("Bot funcionando...");
+
 
 
 
