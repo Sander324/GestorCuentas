@@ -1,14 +1,27 @@
+// Importación de dependencias
 import fetch from 'node-fetch';
 import TelegramBot from 'node-telegram-bot-api';
+import express from 'express';
 
+// Configuración del servidor Express
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.send('Bot funcionando...');
+});
+
+app.listen(PORT, () => {
+  console.log(`Servidor Express escuchando en el puerto ${PORT}`);
+});
+
+// Configuración del bot de Telegram
 const TOKEN = '7599915084:AAHA-m-jQiJLygYA6EPtu8Sxb8qvnHyVWzc'; // Token del bot
 const SHEETY_URL = 'https://api.sheety.co/8465d5ff8c6bbdc820dfdecd6b045c13/gestorDeCuentas/hoja1'; // URL de Sheety
-
 const bot = new TelegramBot(TOKEN, { polling: true });
 
+// Variables y configuraciones
 let users = []; // Para almacenar temporalmente los datos de usuarios durante el registro
-
-// Mapa de plataformas
 const PLATFORMS = {
   1: "Netflix",
   2: "Disney",
@@ -36,7 +49,7 @@ bot.on('message', async (msg) => {
   } else if (users[chatId]?.step === 2) {
     const platformNumber = parseInt(text);
     if (PLATFORMS[platformNumber]) {
-      users[chatId].platform = PLATFORMS[platformNumber]; // Guarda el nombre de la plataforma
+      users[chatId].platform = PLATFORMS[platformNumber];
       users[chatId].step = 3;
       bot.sendMessage(chatId, "¿Cuántos meses deseas asignar (1 o 2)?");
     } else {
@@ -49,7 +62,6 @@ bot.on('message', async (msg) => {
       const startDate = new Date();
       const endDate = new Date(startDate);
       endDate.setDate(startDate.getDate() + days);
-      const daysRemaining = days;
 
       const data = {
         hoja1: {
@@ -58,7 +70,7 @@ bot.on('message', async (msg) => {
           dias: days,
           fechaInicio: startDate.toISOString().split('T')[0],
           fechaVencimiento: endDate.toISOString().split('T')[0],
-          diasRestantes: daysRemaining
+          diasRestantes: days
         }
       };
 
@@ -77,7 +89,7 @@ bot.on('message', async (msg) => {
         console.error("Error:", err);
       }
 
-      delete users[chatId]; // Limpia el registro temporal
+      delete users[chatId];
     } else {
       bot.sendMessage(chatId, "Por favor, ingresa 1 o 2 meses.");
     }
@@ -143,32 +155,10 @@ bot.onText(/\/proximos/, async (msg) => {
     bot.sendMessage(chatId, "❌ Error al obtener los usuarios próximos a vencer.");
     console.error("Error:", err);
   }
-const fetch = require('node-fetch');
-const TelegramBot = require('node-telegram-bot-api');
-const express = require('express');
-
-// Configuración del servidor Express
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-  res.send('Bot funcionando...');
 });
 
-app.listen(PORT, () => {
-  console.log(`Servidor Express escuchando en el puerto ${PORT}`);
-});
+console.log("Bot funcionando correctamente...");
 
-// Configuración del bot de Telegram
-const TOKEN = '7599915084:AAHA-m-jQiJLygYA6EPtu8Sxb8qvnHyVWzc';
-const bot = new TelegramBot(TOKEN, { polling: true });
-
-bot.on('message', (msg) => {
-  const chatId = msg.chat.id;
-  bot.sendMessage(chatId, '¡Hola! Soy tu bot funcionando correctamente.');
-});
-
-console.log("Bot funcionando...");
 
 
 
