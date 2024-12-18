@@ -143,13 +143,13 @@ bot.onText(/\/proximos/, async (msg) => {
     bot.sendMessage(chatId, "❌ Error al obtener los usuarios próximos a vencer.");
     console.error("Error:", err);
   }
-import express from 'express';
+const express = require('express');
 
 const app = express();
-const PORT = process.env.PORT || 3000; // Usa el puerto que Render asigne dinámicamente o 3000 como fallback
+const PORT = process.env.PORT || 3000; // Usa el puerto que Render asigna dinámicamente o 3000
 
 app.get('/', (req, res) => {
-  res.send('Bot funcionando...'); // Respuesta básica para el escaneo de Render
+  res.send('Bot funcionando...'); // Respuesta básica para Render
 });
 
 app.listen(PORT, () => {
