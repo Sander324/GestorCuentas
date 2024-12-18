@@ -143,8 +143,8 @@ bot.onText(/\/proximos/, async (msg) => {
     bot.sendMessage(chatId, "❌ Error al obtener los usuarios próximos a vencer.");
     console.error("Error:", err);
   }
-import express from 'express';
-import TelegramBot from 'node-telegram-bot-api';
+const express = require('express');
+const TelegramBot = require('node-telegram-bot-api');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
