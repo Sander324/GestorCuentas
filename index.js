@@ -104,7 +104,76 @@ bot.on('message', async (msg) => {
   }
 });
 
-// Comandos /vencidos y /proximos implementados igual con validaciones
+// Comando /vencidos
+bot.onText(/\/vencidos/, async (msg) => {
+  const chatId = msg.chat.id;
+
+  try {
+    const response = await fetch(SHEETY_URL);
+    const data = await response.json();
+
+    if (!data.hoja1 || !Array.isArray(data.hoja1)) {
+      bot.sendMessage(chatId, "❌ No se encontraron datos en la hoja.");
+      return;
+    }
+
+    const today = new Date();
+    const vencidos = data.hoja1.filter((user) => {
+      const vencimiento = new Date(user.fechaVencimiento);
+      return vencimiento < today;
+    });
+
+    if (vencidos.length > 0) {
+      let message = "📋 Usuarios vencidos:\n";
+      vencidos.forEach((user) => {
+        message += `- ${user.nombre} (${user.plataforma}) - Venció el: ${user.fechaVencimiento}\n`;
+      });
+      bot.sendMessage(chatId, message);
+    } else {
+      bot.sendMessage(chatId, "✅ No hay usuarios vencidos.");
+    }
+  } catch (err) {
+    bot.sendMessage(chatId, "❌ Error al obtener los datos de Sheety.");
+    console.error("Error:", err);
+  }
+});
+
+// Comando /proximos
+bot.onText(/\/proximos/, async (msg) => {
+  const chatId = msg.chat.id;
+
+  try {
+    const response = await fetch(SHEETY_URL);
+    const data = await response.json();
+
+    if (!data.hoja1 || !Array.isArray(data.hoja1)) {
+      bot.sendMessage(chatId, "❌ No se encontraron datos en la hoja.");
+      return;
+    }
+
+    const today = new Date();
+    const threeDaysFromNow = new Date(today);
+    threeDaysFromNow.setDate(today.getDate() + 3);
+
+    const proximos = data.hoja1.filter((user) => {
+      const vencimiento = new Date(user.fechaVencimiento);
+      return vencimiento >= today && vencimiento <= threeDaysFromNow;
+    });
+
+    if (proximos.length > 0) {
+      let message = "⏳ Usuarios próximos a vencer:\n";
+      proximos.forEach((user) => {
+        message += `- ${user.nombre} (${user.plataforma}) - Vence el: ${user.fechaVencimiento}\n`;
+      });
+      bot.sendMessage(chatId, message);
+    } else {
+      bot.sendMessage(chatId, "✅ No hay usuarios próximos a vencer.");
+    }
+  } catch (err) {
+    bot.sendMessage(chatId, "❌ Error al obtener los datos de Sheety.");
+    console.error("Error:", err);
+  }
+});
 
 console.log("Bot funcionando correctamente...");
 
