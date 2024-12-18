@@ -144,20 +144,31 @@ bot.onText(/\/proximos/, async (msg) => {
     console.error("Error:", err);
   }
 const express = require('express');
+const TelegramBot = require('node-telegram-bot-api');
 
+// Configuración de Express para el puerto "ficticio"
 const app = express();
-const PORT = process.env.PORT || 3000; // Usa el puerto que Render asigna dinámicamente o 3000
+const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.send('Bot funcionando...'); // Respuesta básica para Render
+  res.send('Bot funcionando...');
 });
 
 app.listen(PORT, () => {
   console.log(`Servidor Express escuchando en el puerto ${PORT}`);
 });
 
-// Lógica principal del bot aquí
+// Configuración del bot de Telegram
+const TOKEN = '7599915084:AAHA-m-jQiJLygYA6EPtu8Sxb8qvnHyVWzc';
+const bot = new TelegramBot(TOKEN, { polling: true });
+
+bot.on('message', (msg) => {
+  const chatId = msg.chat.id;
+  bot.sendMessage(chatId, '¡Hola! Tu bot está funcionando correctamente.');
+});
+
 console.log("Bot funcionando...");
+
  
   
 
