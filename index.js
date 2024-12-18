@@ -143,31 +143,35 @@ bot.onText(/\/proximos/, async (msg) => {
     bot.sendMessage(chatId, "❌ Error al obtener los usuarios próximos a vencer.");
     console.error("Error:", err);
   }
-const express = require('express');
-const TelegramBot = require('node-telegram-bot-api');
+const express = require('express'); // Importa Express
+const TelegramBot = require('node-telegram-bot-api'); // Importa el bot de Telegram
 
-// Configuración de Express para el puerto "ficticio"
+// Configuración del servidor Express para el puerto
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000; // Render asigna dinámicamente un puerto
 
+// Respuesta básica para validar el puerto en Render
 app.get('/', (req, res) => {
   res.send('Bot funcionando...');
 });
 
+// Inicia el servidor Express
 app.listen(PORT, () => {
   console.log(`Servidor Express escuchando en el puerto ${PORT}`);
 });
 
 // Configuración del bot de Telegram
-const TOKEN = '7599915084:AAHA-m-jQiJLygYA6EPtu8Sxb8qvnHyVWzc';
+const TOKEN = 'TU_TOKEN_DEL_BOT_AQUI'; // Coloca aquí tu token del bot de Telegram
 const bot = new TelegramBot(TOKEN, { polling: true });
 
+// Lógica principal del bot
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
-  bot.sendMessage(chatId, '¡Hola! Tu bot está funcionando correctamente.');
+  bot.sendMessage(chatId, '¡Hola! Soy tu bot de Telegram, estoy funcionando correctamente.');
 });
 
-console.log("Bot funcionando...");
+console.log("Bot funcionando correctamente...");
+
 
  
   
